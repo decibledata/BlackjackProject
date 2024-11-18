@@ -13,7 +13,11 @@ public class Player {
 		hand = new BlackjackHand();
 	}
 
-	public int getHandValue() {
+	public boolean blackJack() {
+		return hand.blackJack() && getHandValue() == 21;
+	}
+	
+ 	public int getHandValue() {
 		return hand.getHandValue();
 	}
 
@@ -31,7 +35,7 @@ public class Player {
 
 		while (choice) {
 			System.out.println("\nYou stand at " + hand);
-			System.out.println("\n\tHit[1] or Stay[2]?");
+			System.out.println("\n\tHit[1] or Stay[2]");
 			int hS = sc.nextInt();
 
 			if (hS == 1) {

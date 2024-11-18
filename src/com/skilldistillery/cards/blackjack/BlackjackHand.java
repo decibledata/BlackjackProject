@@ -9,12 +9,10 @@ public class BlackjackHand extends AbstractHand {
 	@Override
 	public int getHandValue() {
 		int handValue = 0;
-		int aceCard = 0;
 		
 		for(Card card: cardsInHand) {
 			handValue += card.getValue();
 			if (card.getValue() == 11 ) {
-				aceCard++;
 			}
 		}
 		return handValue;
