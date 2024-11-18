@@ -42,7 +42,6 @@ public class BlackjackApp {
 	}
 
 	private void playRound() {
-		// TODO Auto-generated method stub
 		int betAmount = getBetAmount();
 		deck.shuffle();
 
@@ -55,17 +54,28 @@ public class BlackjackApp {
 		System.out.println("Dealer's hand: [facedown card], " + dealer.hand.getCardsInHand());
 
 		moneyWonOrLost(betAmount);
+		//Fix so that winner or loser is displayed..
 
 		player.clearHand();
 		dealer.clearHand();
 	}
 
 	private boolean playAgain() {
-		// TODO Auto-generated method stub
 		if (playerBank > 0) {
 			System.out.println("\nFeeling Lucky? Wanna play again?\n[1] YES | [2] NO\n");
 			int playAgain = sc.nextInt();
-			return playAgain == 1;
+			
+			if (playAgain == 1) {
+				return true;
+			}
+			else if (playAgain == 2) {
+				System.out.println("\nThanks for stopping by! Your Cashout is $" + playerBank);
+				System.exit(0);
+			}
+			else {
+				System.out.println("INVALID CHOICE. TRY AGAIN");
+				return playAgain();
+			}
 		}
 		return false;
 	}
@@ -95,7 +105,7 @@ public class BlackjackApp {
 				break;
 			} else {
 				System.out.println("Are you joking? " + "This place is a $500 Minimum. "
-						+ "Come back when you got some real money.\nTry Again:");
+						+ "Come back when you got some real money..");
 			}
 		}
 		return playerBank;
