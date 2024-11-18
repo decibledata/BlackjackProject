@@ -32,7 +32,7 @@ public class BlackjackApp {
 					+ "       ,'`.    _  _    /\\    _(_)_\n" + "      (_,._)  ( `' )  <  >  (_)+(_)\n"
 					+ "        /\\     `.,'    \\/      |\n");
 
-			playerBet();
+			getBank();
 
 			while (playerBank > 0) {
 				playRound();
@@ -43,64 +43,88 @@ public class BlackjackApp {
 
 	private void playRound() {
 		// TODO Auto-generated method stub
+		int betAmount = getBetAmount();
 		deck.shuffle();
 
 		player.hitMe(deck.dealCard());
 		player.hitMe(deck.dealCard());
 		dealer.hitMe(deck.dealCard());
 		dealer.hitMe(deck.dealCard());
-		
-		boolean playerTurns = player.hitStay(deck);
+
+		System.out.println("Your hand: " + player.hand);
+		System.out.println("Dealer's hand: [facedown card], " + dealer.hand.getCardsInHand());
+
+		moneyWonOrLost(betAmount);
+
+		player.clearHand();
+		dealer.clearHand();
 	}
 
-	private void playAgain() {
+	private boolean playAgain() {
 		// TODO Auto-generated method stub
 		if (playerBank > 0) {
 			System.out.println("\nFeeling Lucky? Wanna play again?\n[1] YES | [2] NO\n");
 			int playAgain = sc.nextInt();
-
-			if (playAgain == 1) {
-				playRound();
-			} else if (playAgain == 2) {
-				System.out.println("\nThanks for stopping by. Your Cashout is " + playerBank);
-				System.exit(0);
-			} else {
-				System.out.println("Invalid. Try Again");
-			}
+			return playAgain == 1;
 		}
+		return false;
 	}
 
-	public void playerBet() {
-
+	private int getBetAmount() {
+		int betAmount;
 		while (true) {
-			System.out.print("ENTER STARTING AMOUNT: $");
+			System.out.print("ENTER BET AMOUNT: $");
+			betAmount = sc.nextInt();
+			if (betAmount > 0 && betAmount <= playerBank) {
+				playerBank -= betAmount;
+				break;
+			} else {
+				System.out.println("Invalid Bet. Enter valid amount.");
+			}
+		}
+		return betAmount;
+	}
+
+	private int getBank() {
+		while (true) {
+			System.out.print("ENTER STARTING BANK: $");
 			playerBank = sc.nextInt();
 
 			if (playerBank >= 500) {
-				System.out.println("Alright. You ready? Great! Lets Play!");
+				System.out.println("\nAlright. You ready? Great! Lets Play!\n");
 				break;
 			} else {
-				System.out.println(
-						"Are you joking? This place is a $500 Minimum. Come back when you got some real money.\nTry Again:");
+				System.out.println("Are you joking? " + "This place is a $500 Minimum. "
+						+ "Come back when you got some real money.\nTry Again:");
 			}
 		}
+		return playerBank;
 	}
-	
-	public void betting() {
+
+	public void playerBet() {
+		getBetAmount();
+	}
+
+	private void moneyWonOrLost(int betAmount) {
 		int playerHandValue = player.hand.getHandValue();
 		int dealerHandValue = dealer.hand.getHandValue();
-		
-		if(playerHandValue > 21) {
-			int betAmount = 0;
-			playerBank -= betAmount;
-			System.out.println("BUST! You lose $" + betAmount);
-		}
-		else if (dealerHandValue > 21) {
-			int betAmount = 0;
+
+		System.out.println("Dealer's Hand: " + dealer.hand);
+
+		if (playerHandValue > 21) {
+			System.out.println("\nBUST! You lose $" + betAmount);
+		} else if (dealerHandValue > 21) {
 			playerBank += betAmount;
-			System.out.println("DEALER BUST! You gain $" + betAmount);
+			System.out.println("\nDEALER BUST! You gain $" + betAmount);
+		} else if (playerHandValue > dealerHandValue) {
+			playerBank += betAmount;
+			System.out.println("\nYOU WIN! You gain $" + betAmount);
+		} else if (playerHandValue == dealerHandValue) {
+			playerBank += betAmount;
+			System.out.println("\nTIE!");
 		}
 	}
+
 }
 
 // NO HAND NO DECK NO CARDS

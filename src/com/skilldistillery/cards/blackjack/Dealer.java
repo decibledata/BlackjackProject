@@ -21,5 +21,11 @@ public class Dealer extends Player {
 	public void showHand() {
 		System.out.println();
 	}
+	public void playTurn(Deck deck) {
+		while (hand.getHandValue() < 17 ) {
+			hitMe(deck.dealCard());
+		}
+		
+	}
 	
 }

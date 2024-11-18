@@ -19,7 +19,6 @@ public abstract class AbstractHand {
 	
 	@Override
 	public String toString() {
-		return "Your Cards " + cardsInHand;
+		return "" + cardsInHand;
 	}
 }
-

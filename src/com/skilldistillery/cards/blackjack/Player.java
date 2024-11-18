@@ -16,18 +16,23 @@ public class Player {
 		hand.addCard(card);
 	}
 	
+	public boolean busted() {
+		return hand.getHandValue() > 21;
+	}
+	
 	public int getHandValue() {
 		return hand.getHandValue();
 	}
 	
-	
-	
 	public boolean hitStay(Deck deck) {
+		
 		boolean choice = true;
+		
 		while (choice) {
-			System.out.println("You stand at " + hand );
+			System.out.println("You stand at " + hand);
 			System.out.println("\n\tHit[1] or Stay[2]?");
 			int hS = sc.nextInt();
+			
 			switch (hS) {
 			case 1: 
 				hitMe(deck.dealCard());
@@ -43,4 +48,9 @@ public class Player {
 		return choice;
 	}
 	//NO getHand()
+	public void clearHand() {
+		hand.clear();
+		// TODO Auto-generated method stub
+		
+	}
 }

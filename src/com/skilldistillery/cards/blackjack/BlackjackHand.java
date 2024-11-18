@@ -26,4 +26,12 @@ public class BlackjackHand extends AbstractHand {
 	public boolean bust() {
 		return (getHandValue() > 21);
 	}
+
+	public void clear() {
+		cardsInHand.clear();		
+	}
+
+	public Object getCardsInHand() {
+		return cardsInHand;
+	}
 }
