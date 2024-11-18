@@ -15,7 +15,12 @@ public abstract class AbstractHand {
 
 	public void addCard(Card card) {
 		cardsInHand.add(card);	
+	if (getHandValue() > 21 ) {
+		System.out.println("BUST!");
 	}
+	}
+	
+
 	
 	@Override
 	public String toString() {

@@ -12,7 +12,13 @@ public class Dealer extends Player {
 	}
 	//NO getDeck()
 	public Card dealCard() {
-		return deck.dealCard();
+		if (deck.checkDeckSize() > 0) {
+			return deck.dealCard();			
+		}
+		else {
+			System.out.println("NO CARDS LEFT");
+		}
+		return null;
 	}
 	
 	public void shuffleDeck() {
@@ -22,10 +28,10 @@ public class Dealer extends Player {
 		System.out.println();
 	}
 	public void playTurn(Deck deck) {
-		while (hand.getHandValue() < 17 ) {
-			hitMe(deck.dealCard());
+		while (getHandValue() < 17 ) {
+			addCardInHand(deck.dealCard());
 		}
-		
+	
 	}
 	
 }

@@ -47,26 +47,40 @@ public class BlackjackApp {
 		int betAmount = getBetAmount();
 		deck.shuffle();
 
-		player.hitMe(deck.dealCard());
-		player.hitMe(deck.dealCard());
-		dealer.hitMe(deck.dealCard());
-		dealer.hitMe(deck.dealCard());
-
-		System.out.println("Your hand: " + player.hand);
-		System.out.println("Dealer's hand: [facedown card], " + dealer.hand.getCardsInHand());
+		player.addCardInHand(deck.dealCard());
+		player.addCardInHand(deck.dealCard());
+		dealer.addCardInHand(deck.dealCard());
+		dealer.addCardInHand(deck.dealCard());
 
 		Random rand = new Random();
 		int playerHandValue = player.hand.getHandValue();
 		int dealerHandValue = dealer.hand.getHandValue();
 		int dealerBet = rand.nextInt(playerBank / 2) + 1;
 
+		System.out.println("DEALERS BET: $" + dealerBet);
+		System.out.println("\nYour hand: " + player.hand);
+		System.out.println("Dealer's hand: [facedown card], " + dealer.hand.getCardsInHand());
+		
+		player.hitStay(deck);
+		dealer.playTurn(deck);
+
+		playerHandValue = player.getHandValue();
+		dealerHandValue = dealer.getHandValue();
+
 		String winner = showWinner(betAmount, playerHandValue, dealerHandValue, dealerBet);
 
+		
+		
 		if (winner.equals("Player")) {
-			System.out.println("\nYOU WIN! You Gained $" + betAmount + "\nYou currently have " + playerBank + " in your bank.");
+			playerBank += betAmount + dealerBet;
+			System.out.println("\nYOU WIN! You Gained $" + (betAmount + dealerBet) + "\nYou currently have "
+					+ playerBank + " in your bank.");
+
 		} else if (winner.equals("Dealer")) {
+			playerBank -= betAmount;
 			System.out.println(
 					"\nYOU LOSE! You Lost $" + betAmount + "\nYou currently have " + playerBank + " in your bank.");
+
 		} else {
 			System.out.println("TIE");
 		}
@@ -77,7 +91,7 @@ public class BlackjackApp {
 	}
 
 	private String showWinner(int betAmount, int playerHandValue, int dealerHandValue, int dealerBet) {
-		if (playerHandValue > 21) {
+		if (player.busted()) {
 			System.out.println("BUST!");
 			return "Dealer";
 		} else if (dealerHandValue > 21) {
@@ -145,4 +159,5 @@ public class BlackjackApp {
 		getBetAmount();
 	}
 }
+
 // NO HAND NO DECK NO CARDS

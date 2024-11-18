@@ -30,10 +30,12 @@ public class Deck {
 	}
 
 	public Card dealCard() {
-		if (cards.isEmpty()) {
-			throw new RuntimeException("No more cards left to play with!");
+		if (checkDeckSize() > 0) {
+			return cards.remove(0);
+		} else {
+			System.out.println("NO CARDS LEFT");
 		}
-		return cards.remove(0);
-	}
+		return null;
 
+  }
 }

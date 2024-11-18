@@ -12,45 +12,46 @@ public class Player {
 	public Player() {
 		hand = new BlackjackHand();
 	}
-	public void hitMe(Card card) {
-		hand.addCard(card);
-	}
-	
-	public boolean busted() {
-		return hand.getHandValue() > 21;
-	}
-	
+
 	public int getHandValue() {
 		return hand.getHandValue();
 	}
-	
-	public boolean hitStay(Deck deck) {
-		
-		boolean choice = true;
-		
-		while (choice) {
-			System.out.println("You stand at " + hand);
-			System.out.println("\n\tHit[1] or Stay[2]?");
-			int hS = sc.nextInt();
-			
-			switch (hS) {
-			case 1: 
-				hitMe(deck.dealCard());
-				break;
-			case 2:
-				return choice;
-			default:
-				System.out.println("Invalid Choice. Try again.");
-			break;
-			}
-		}
-		System.out.println("!BUST!");
-		return choice;
-	}
-	//NO getHand()
+
 	public void clearHand() {
 		hand.clear();
-		// TODO Auto-generated method stub
-		
+
 	}
+
+	public void addCardInHand(Card card) {
+		hand.addCard(card);
+	}
+
+	public boolean hitStay(Deck deck) {
+		boolean choice = true;
+
+		while (choice) {
+			System.out.println("\nYou stand at " + hand);
+			System.out.println("\n\tHit[1] or Stay[2]?");
+			int hS = sc.nextInt();
+
+			if (hS == 1) {
+				hand.addCard(deck.dealCard());
+				System.out.println("HIT ME!");
+				if (hand.getHandValue() > 21) {
+					System.out.println("BUST!");
+				}
+			} else if (hS == 2) {
+				choice = false;
+				System.out.println("STAY");
+			} else {
+				System.out.println("Invalid choice.. Try again.");
+			}
+		}
+		return choice;
+	}
+
+	public boolean busted() {
+		return hand.getHandValue() > 21;
+	}
+
 }
