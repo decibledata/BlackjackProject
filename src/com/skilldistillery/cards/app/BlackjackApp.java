@@ -38,7 +38,10 @@ public class BlackjackApp {
 
 			while (playerBank > 0) {
 				playRound();
-				playAgain();
+				if (playAgain()) {
+					System.out.println("Thanks for stopping by. Your cashout is $" + playerBank);
+					break;
+				}
 			}
 		}
 	}
@@ -53,31 +56,42 @@ public class BlackjackApp {
 		dealer.addCardInHand(deck.dealCard());
 
 		Random rand = new Random();
-		int playerHandValue = player.hand.getHandValue();
-		int dealerHandValue = dealer.hand.getHandValue();
 		int dealerBet = rand.nextInt(playerBank / 2) + 1;
 
 		System.out.println("DEALERS BET: $" + dealerBet);
 		System.out.println("\nYour hand: " + player.hand);
 		System.out.println("Dealer's hand: [facedown card], " + dealer.hand.getCardsInHand());
 		
-		player.hitStay(deck);
-		dealer.playTurn(deck);
+		boolean playerBust = player.hitStay(deck);
+			if (playerBust) {
+				System.out.println("BUST");
+				player.clearHand();
+				dealer.clearHand();
+				return;
+				}
 
-		playerHandValue = player.getHandValue();
-		dealerHandValue = dealer.getHandValue();
+		
+		dealer.playTurn(deck);
+		if (dealer.busted()) {
+			System.out.println("DEALER BUST");
+			playerBank += betAmount * 2;
+			player.clearHand();
+			dealer.clearHand();
+			return;
+			}
+
+		int playerHandValue = player.getHandValue();
+		int dealerHandValue = dealer.getHandValue();
+		
 
 		String winner = showWinner(betAmount, playerHandValue, dealerHandValue, dealerBet);
-
-		
 		
 		if (winner.equals("Player")) {
-			playerBank += betAmount + dealerBet;
+			playerBank += betAmount * 2;
 			System.out.println("\nYOU WIN! You Gained $" + (betAmount + dealerBet) + "\nYou currently have "
 					+ playerBank + " in your bank.");
 
 		} else if (winner.equals("Dealer")) {
-			playerBank -= betAmount;
 			System.out.println(
 					"\nYOU LOSE! You Lost $" + betAmount + "\nYou currently have " + playerBank + " in your bank.");
 
@@ -107,7 +121,6 @@ public class BlackjackApp {
 	}
 
 	private boolean playAgain() {
-		if (playerBank > 0) {
 			System.out.println("\nFeeling Lucky? Wanna play again?\n[1] YES | [2] NO\n");
 			int playAgain = sc.nextInt();
 
@@ -115,13 +128,11 @@ public class BlackjackApp {
 				return true;
 			} else if (playAgain == 2) {
 				System.out.println("\nThanks for stopping by! Your Cashout is $" + playerBank);
-				System.exit(0);
+				return false;
 			} else {
 				System.out.println("INVALID CHOICE. TRY AGAIN");
 				return playAgain();
 			}
-		}
-		return false;
 	}
 
 	private int getBetAmount() {

@@ -25,7 +25,7 @@ public class Dealer extends Player {
 		deck.shuffle();
 	}
 	public void showHand() {
-		System.out.println();
+		System.out.println("Dealer's Hand: " + hand);
 	}
 	public void playTurn(Deck deck) {
 		while (getHandValue() < 17 ) {

@@ -47,7 +47,7 @@ public class Player {
 				System.out.println("Invalid choice.. Try again.");
 			}
 		}
-		return choice;
+		return false;
 	}
 
 	public boolean busted() {
