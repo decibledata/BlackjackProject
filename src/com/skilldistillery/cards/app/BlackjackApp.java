@@ -1,6 +1,8 @@
 package com.skilldistillery.cards.app;
 
+import java.util.Random;
 import java.util.Scanner;
+
 import com.skilldistillery.cards.blackjack.Dealer;
 import com.skilldistillery.cards.blackjack.Player;
 import com.skilldistillery.cards.common.Deck;
@@ -53,13 +55,15 @@ public class BlackjackApp {
 		System.out.println("Your hand: " + player.hand);
 		System.out.println("Dealer's hand: [facedown card], " + dealer.hand.getCardsInHand());
 
+		Random rand = new Random();
 		int playerHandValue = player.hand.getHandValue();
 		int dealerHandValue = dealer.hand.getHandValue();
+		int dealerBet = rand.nextInt(playerBank / 2) + 1;
 
-		String winner = showWinner(betAmount, playerHandValue, dealerHandValue);
+		String winner = showWinner(betAmount, playerHandValue, dealerHandValue, dealerBet);
 
 		if (winner.equals("Player")) {
-			System.out.println("\nYOU WIN! You Gained $" + betAmount);
+			System.out.println("\nYOU WIN! You Gained $" + betAmount + "\nYou currently have " + playerBank + " in your bank.");
 		} else if (winner.equals("Dealer")) {
 			System.out.println(
 					"\nYOU LOSE! You Lost $" + betAmount + "\nYou currently have " + playerBank + " in your bank.");
@@ -72,7 +76,7 @@ public class BlackjackApp {
 		dealer.clearHand();
 	}
 
-	private String showWinner(int betAmount, int playerHandValue, int dealerHandValue) {
+	private String showWinner(int betAmount, int playerHandValue, int dealerHandValue, int dealerBet) {
 		if (playerHandValue > 21) {
 			System.out.println("BUST!");
 			return "Dealer";
