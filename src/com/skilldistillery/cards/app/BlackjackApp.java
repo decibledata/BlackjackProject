@@ -3,7 +3,6 @@ package com.skilldistillery.cards.app;
 import java.util.Scanner;
 import com.skilldistillery.cards.blackjack.Dealer;
 import com.skilldistillery.cards.blackjack.Player;
-import com.skilldistillery.cards.common.Card;
 import com.skilldistillery.cards.common.Deck;
 
 public class BlackjackApp {
@@ -39,7 +38,6 @@ public class BlackjackApp {
 				playRound();
 				playAgain();
 			}
-			System.out.println("Thanks for stopping by. Here is your cashout " + playerBank);
 		}
 	}
 
@@ -51,6 +49,8 @@ public class BlackjackApp {
 		player.hitMe(deck.dealCard());
 		dealer.hitMe(deck.dealCard());
 		dealer.hitMe(deck.dealCard());
+		
+		boolean playerTurns = player.hitStay(deck);
 	}
 
 	private void playAgain() {
@@ -83,6 +83,22 @@ public class BlackjackApp {
 				System.out.println(
 						"Are you joking? This place is a $500 Minimum. Come back when you got some real money.\nTry Again:");
 			}
+		}
+	}
+	
+	public void betting() {
+		int playerHandValue = player.hand.getHandValue();
+		int dealerHandValue = dealer.hand.getHandValue();
+		
+		if(playerHandValue > 21) {
+			int betAmount = 0;
+			playerBank -= betAmount;
+			System.out.println("BUST! You lose $" + betAmount);
+		}
+		else if (dealerHandValue > 21) {
+			int betAmount = 0;
+			playerBank += betAmount;
+			System.out.println("DEALER BUST! You gain $" + betAmount);
 		}
 	}
 }
