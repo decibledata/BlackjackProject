@@ -55,19 +55,18 @@ public class BlackjackApp {
 
 		int playerHandValue = player.hand.getHandValue();
 		int dealerHandValue = dealer.hand.getHandValue();
-		
+
 		String winner = showWinner(betAmount, playerHandValue, dealerHandValue);
-		
+
 		if (winner.equals("Player")) {
 			System.out.println("\nYOU WIN! You Gained $" + betAmount);
-		}
-		else if (winner.equals("Dealer")) {
-			System.out.println("\nYOU LOSE! You Lost $" + betAmount);
-		}
-		else {
+		} else if (winner.equals("Dealer")) {
+			System.out.println(
+					"\nYOU LOSE! You Lost $" + betAmount + "\nYou currently have " + playerBank + " in your bank.");
+		} else {
 			System.out.println("TIE");
 		}
-		//Fix so that winner or loser is displayed..
+		// Fix so that winner or loser is displayed..
 
 		player.clearHand();
 		dealer.clearHand();
@@ -77,33 +76,29 @@ public class BlackjackApp {
 		if (playerHandValue > 21) {
 			System.out.println("BUST!");
 			return "Dealer";
-		}
-		else if (dealerHandValue > 21) {
+		} else if (dealerHandValue > 21) {
 			System.out.println("DEALER BUST!");
 			return "Player";
-		}
-		else if (playerHandValue > dealerHandValue) {
+		} else if (playerHandValue > dealerHandValue) {
 			return "Player";
-		}
-		else if (dealerHandValue > playerHandValue) {
+		} else if (dealerHandValue > playerHandValue) {
 			return "Dealer";
+		} else {
+			return "Tie";
 		}
-		return null;
 	}
 
 	private boolean playAgain() {
 		if (playerBank > 0) {
 			System.out.println("\nFeeling Lucky? Wanna play again?\n[1] YES | [2] NO\n");
 			int playAgain = sc.nextInt();
-			
+
 			if (playAgain == 1) {
 				return true;
-			}
-			else if (playAgain == 2) {
+			} else if (playAgain == 2) {
 				System.out.println("\nThanks for stopping by! Your Cashout is $" + playerBank);
 				System.exit(0);
-			}
-			else {
+			} else {
 				System.out.println("INVALID CHOICE. TRY AGAIN");
 				return playAgain();
 			}
@@ -145,23 +140,5 @@ public class BlackjackApp {
 	public void playerBet() {
 		getBetAmount();
 	}
-
-	private int moneyWonOrLost(int betAmount, int playerHandValue, int dealerHandValue) {
-
-		if (playerHandValue > 21) {
-			System.out.println("\nBUST! You lose $" + betAmount);
-		} else if (dealerHandValue > 21) {
-			playerBank += betAmount;
-			System.out.println("\nDEALER BUST! You gain $" + betAmount);
-		} else if (playerHandValue > dealerHandValue) {
-			playerBank += betAmount;
-			System.out.println("\nYOU WIN! You gain $" + betAmount);
-		} else if (playerHandValue == dealerHandValue) {
-			playerBank += betAmount;
-			System.out.println("\nTIE!");
-		}
-		return dealerHandValue;
-	}
-
 }
 // NO HAND NO DECK NO CARDS
