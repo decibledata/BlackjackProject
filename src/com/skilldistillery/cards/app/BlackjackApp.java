@@ -53,11 +53,42 @@ public class BlackjackApp {
 		System.out.println("Your hand: " + player.hand);
 		System.out.println("Dealer's hand: [facedown card], " + dealer.hand.getCardsInHand());
 
-		moneyWonOrLost(betAmount);
+		int playerHandValue = player.hand.getHandValue();
+		int dealerHandValue = dealer.hand.getHandValue();
+		
+		String winner = showWinner(betAmount, playerHandValue, dealerHandValue);
+		
+		if (winner.equals("Player")) {
+			System.out.println("\nYOU WIN! You Gained $" + betAmount);
+		}
+		else if (winner.equals("Dealer")) {
+			System.out.println("\nYOU LOSE! You Lost $" + betAmount);
+		}
+		else {
+			System.out.println("TIE");
+		}
 		//Fix so that winner or loser is displayed..
 
 		player.clearHand();
 		dealer.clearHand();
+	}
+
+	private String showWinner(int betAmount, int playerHandValue, int dealerHandValue) {
+		if (playerHandValue > 21) {
+			System.out.println("BUST!");
+			return "Dealer";
+		}
+		else if (dealerHandValue > 21) {
+			System.out.println("DEALER BUST!");
+			return "Player";
+		}
+		else if (playerHandValue > dealerHandValue) {
+			return "Player";
+		}
+		else if (dealerHandValue > playerHandValue) {
+			return "Dealer";
+		}
+		return null;
 	}
 
 	private boolean playAgain() {
@@ -115,11 +146,7 @@ public class BlackjackApp {
 		getBetAmount();
 	}
 
-	private void moneyWonOrLost(int betAmount) {
-		int playerHandValue = player.hand.getHandValue();
-		int dealerHandValue = dealer.hand.getHandValue();
-
-		System.out.println("Dealer's Hand: " + dealer.hand);
+	private int moneyWonOrLost(int betAmount, int playerHandValue, int dealerHandValue) {
 
 		if (playerHandValue > 21) {
 			System.out.println("\nBUST! You lose $" + betAmount);
@@ -133,8 +160,8 @@ public class BlackjackApp {
 			playerBank += betAmount;
 			System.out.println("\nTIE!");
 		}
+		return dealerHandValue;
 	}
 
 }
-
 // NO HAND NO DECK NO CARDS
